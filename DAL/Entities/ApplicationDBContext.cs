@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class ApplicationContext: IdentityDbContext<ApplicationUser>, IApplicationContext
+    public class ApplicationDBContext: IdentityDbContext<ApplicationUser>, IApplicationDBContext
     {
-        public ApplicationContext() : base("FinalDBConn")
+        public ApplicationDBContext() : base("FinalDBConn")
         {
-            Database.SetInitializer<ApplicationContext>(null);
+            Database.SetInitializer<ApplicationDBContext>(null);
         }
 
-        public ApplicationContext(string connString)
+        public ApplicationDBContext(string connString)
             : base(connString)
         {
-            Database.SetInitializer<ApplicationContext>(new DBInitializer());
+            Database.SetInitializer<ApplicationDBContext>(new DBInitializer());
         }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class

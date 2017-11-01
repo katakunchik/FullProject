@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    internal class DBInitializer : CreateDatabaseIfNotExists<ApplicationContext>
+    internal class DBInitializer : CreateDatabaseIfNotExists<ApplicationDBContext>
     {
-        protected override void Seed(ApplicationContext context)
+        protected override void Seed(ApplicationDBContext context)
         {
             base.Seed(context);
         }

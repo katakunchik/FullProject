@@ -9,13 +9,13 @@ using System.Web.Mvc;
 
 namespace WebLayer.Controllers
 {
-    public class HomeController : Controller
+    public class AccountController : Controller
     {
         private readonly AppUserManager _userManager;
         private readonly AppSignInManager _signInManager;
         private readonly IAuthenticationManager _authManager;
 
-        public HomeController(AppUserManager userManager, AppSignInManager signInManager, IAuthenticationManager authManager)
+        public AccountController(AppUserManager userManager, AppSignInManager signInManager, IAuthenticationManager authManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,22 +45,9 @@ namespace WebLayer.Controllers
                 return _authManager;
             }
         }
+        // GET: Account
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

@@ -53,11 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\ApplicationContext.cs" />
+    <Compile Include="Entities\ApplicationDBContext.cs" />
     <Compile Include="Entities\DBInitializer.cs" />
     <Compile Include="Entities\Identity\ApplicationRole.cs" />
     <Compile Include="Entities\Identity\ApplicationUser.cs" />
-    <Compile Include="Interfaces\IApplicationContext.cs" />
+    <Compile Include="Interfaces\IApplicationDBContext.cs" />
     <Compile Include="Migrations\201710311034593_Create DB And Identity Tables.cs" />
     <Compile Include="Migrations\201710311034593_Create DB And Identity Tables.Designer.cs">
       <DependentUpon>201710311034593_Create DB And Identity Tables.cs</DependentUpon>
@@ -73,6 +73,9 @@
     <EmbeddedResource Include="Migrations\201710311034593_Create DB And Identity Tables.resx">
       <DependentUpon>201710311034593_Create DB And Identity Tables.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
