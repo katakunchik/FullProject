@@ -22,25 +22,13 @@ namespace WebLayer.App_Start
 
         public void Configuration(IAppBuilder app)
         {
-            //app.CreatePerOwinContext<EFContext>(EFContext.Create);
-            //app.CreatePerOwinContext<UserService>(UserService.Create);
-            //app.CreatePerOwinContext<RoleService>(RoleService.Create);
-            //app.CreatePerOwinContext<SignInService>(SignInService.Create);
-
             var builder = new ContainerBuilder();
 
-            builder.RegisterControllers(typeof(MvcApplication).Assembly);
-
-
-            builder.RegisterModule(new DataModule("FinalDBConn"));
-            builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
-            builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
-            builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();
-            builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
-            builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
+            builder.RegisterModule(new DataModule("FinalDBConn", app));
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED
 
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             // BUILD THE CONTAINER
             var container = builder.Build();

@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using BLL.Services.Identity;
+using DAL.Entities;
 using DAL.Entities.Identity;
 using DAL.Interfaces;
 using Microsoft.AspNet.Identity;
