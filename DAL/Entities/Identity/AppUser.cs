@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities.Identity
 {
-    public class ApplicationUser: IdentityUser
+    public class AppUser: IdentityUser
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public virtual UserProfile UserProfile { get; set; }
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             return userIdentity;

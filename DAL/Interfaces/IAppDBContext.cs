@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    public interface IApplicationDBContext : IDisposable
+    public interface IAppDBContext : IDisposable
     {
         IDbSet<TEntity> Set<TEntity>() where TEntity : class;
         int SaveChanges();

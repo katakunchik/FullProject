@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Identity
 {
-    public class AppSignInManager : SignInManager<ApplicationUser, string>
+    public class AppSignInManager : SignInManager<AppUser, string>
     {
         public AppSignInManager(AppUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(AppUser user)
         {
             return user.GenerateUserIdentityAsync((AppUserManager)UserManager);
         }

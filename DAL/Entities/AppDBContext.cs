@@ -10,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class ApplicationDBContext: IdentityDbContext<ApplicationUser>, IApplicationDBContext
+    public class AppDBContext: IdentityDbContext<AppUser>, IAppDBContext
     {
-        public ApplicationDBContext() : base("FinalDBConn")
+        public AppDBContext() : base("FinalDBConn")
         {
-            Database.SetInitializer<ApplicationDBContext>(null);
+            Database.SetInitializer<AppDBContext>(null);
         }
 
-        public ApplicationDBContext(string connString)
+        public AppDBContext(string connString)
             : base(connString)
         {
-            Database.SetInitializer<ApplicationDBContext>(new DBInitializer());
+            Database.SetInitializer<AppDBContext>(new DBInitializer());
         }
+
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {

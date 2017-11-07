@@ -4,6 +4,7 @@ using BLL.Services.Identity;
 using DAL.Entities;
 using DAL.Entities.Identity;
 using DAL.Interfaces;
+using DAL.Repositories;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
@@ -29,14 +30,22 @@ namespace BLL.Services
         }
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(c => new ApplicationDBContext(this._connStr)).AsSelf().InstancePerRequest();
-            builder.RegisterType<ApplicationUserStore>().As<IUserStore<ApplicationUser>>().InstancePerRequest();
+            builder.Register(ctx => new AppDBContext(this._connStr)).As<IAppDBContext>().InstancePerRequest();
+            builder.Register(ctx =>
+            {
+                var context = (AppDBContext)ctx.Resolve<IAppDBContext>();
+                return context;
+            }).AsSelf().InstancePerDependency();
+            builder.RegisterType<ApplicationUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
             builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => _app.GetDataProtectionProvider()).InstancePerRequest();
             builder.RegisterType<AccountProvider>().AsSelf().InstancePerRequest();
+
+            builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
 
             base.Load(builder);
         }

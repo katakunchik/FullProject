@@ -62,7 +62,7 @@ namespace BLL.Providers
 
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
-            var user = new ApplicationUser {
+            var user = new AppUser {
                 UserName = model.Email,
                 Email = model.Email
             };

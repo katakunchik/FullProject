@@ -14,17 +14,17 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ApplicationUserStore : UserStore<ApplicationUser>
+    public class ApplicationUserStore : UserStore<AppUser>
     {
-        public ApplicationUserStore(ApplicationDBContext context)
+        public ApplicationUserStore(AppDBContext context)
         : base(context)
         {
         }
     }
 
-    public class ApplicationRoleStore : RoleStore<ApplicationRole>
+    public class ApplicationRoleStore : RoleStore<AppRole>
     {
-        public ApplicationRoleStore(ApplicationDBContext context)
+        public ApplicationRoleStore(AppDBContext context)
         : base(context)
         {
         }
@@ -69,7 +69,7 @@ namespace BLL.Services
                 {
                     // Enables the application to validate the security stamp when the user logs in.
                     // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<AppUserManager, ApplicationUser>(
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<AppUserManager, AppUser>(
                         validateInterval: TimeSpan.FromMinutes(365),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }

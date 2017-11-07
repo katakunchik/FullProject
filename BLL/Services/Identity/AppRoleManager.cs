@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Identity
 {
-    public class AppRoleManager : RoleManager<ApplicationRole>
+    public class AppRoleManager : RoleManager<AppRole>
     {
-        public AppRoleManager(IRoleStore<ApplicationRole> store) : base(store) { }
+        public AppRoleManager(IRoleStore<AppRole> store) : base(store) { }
     }
 }

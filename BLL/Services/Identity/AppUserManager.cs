@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Identity
 {
-    public class AppUserManager: UserManager<ApplicationUser>
+    public class AppUserManager: UserManager<AppUser>
     {
-        public AppUserManager(IUserStore<ApplicationUser> store, IDataProtectionProvider dataProtectionProvider)
+        public AppUserManager(IUserStore<AppUser> store, IDataProtectionProvider dataProtectionProvider)
         : base(store)
         {
-            UserValidator = new UserValidator<ApplicationUser>(this)
+            UserValidator = new UserValidator<AppUser>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -38,12 +38,12 @@ namespace BLL.Services.Identity
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+            RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<AppUser>
             {
                 MessageFormat = "Your security code is {0}"
             });
 
-            RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+            RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<AppUser>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -52,7 +52,7 @@ namespace BLL.Services.Identity
             EmailService = new EmailService();
             SmsService = new SmsService();
 
-            UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            UserTokenProvider = new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("ASP.NET Identity"));
         }
     }
 }
