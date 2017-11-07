@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -65,18 +66,18 @@ namespace WebLayer.App_Start
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //var facebookOptions = new FacebookAuthenticationOptions
-            //{
-            //    AppId = "350879062040009",
-            //    AppSecret = "f1105a9743238e20671f63d37b373298"
-            //};
+            var facebookOptions = new FacebookAuthenticationOptions
+            {
+                AppId = "325500174583152",
+                AppSecret = "9dc62257ce7e4b965d73b4e587a6d3df"
+            };
 
-            //facebookOptions.Scope.Add("email");
+            facebookOptions.Scope.Add("email");
 
-            //facebookOptions.Fields.Add("name");
-            //facebookOptions.Fields.Add("email");
+            facebookOptions.Fields.Add("name");
+            facebookOptions.Fields.Add("email");
 
-            //app.UseFacebookAuthentication(facebookOptions);
+            app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
