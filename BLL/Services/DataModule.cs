@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using BLL.Interfaces;
 using BLL.Providers;
 using BLL.Services.Identity;
 using DAL.Entities;
@@ -46,6 +47,7 @@ namespace BLL.Services
 
             builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
+            builder.RegisterType<AccountProvider>().As<IAccountProvider>().InstancePerRequest();
 
             base.Load(builder);
         }

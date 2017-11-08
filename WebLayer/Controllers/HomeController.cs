@@ -11,40 +11,6 @@ namespace WebLayer.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppUserManager _userManager;
-        private readonly AppSignInManager _signInManager;
-        private readonly IAuthenticationManager _authManager;
-
-        public HomeController(AppUserManager userManager, AppSignInManager signInManager, IAuthenticationManager authManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _authManager = authManager;
-        }
-
-        public AppSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager;
-            }
-        }
-
-        public AppUserManager UserManager
-        {
-            get
-            {
-                return _userManager;
-            }
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return _authManager;
-            }
-        }
         public ActionResult Index()
         {
             return View();

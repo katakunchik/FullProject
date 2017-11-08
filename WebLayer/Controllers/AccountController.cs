@@ -1,4 +1,5 @@
-﻿using BLL.Providers;
+﻿using BLL.Interfaces;
+using BLL.Providers;
 using BLL.Services;
 using BLL.Services.Identity;
 using BLL.ViewModels.Identity;
@@ -16,8 +17,8 @@ namespace WebLayer.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountProvider _accountProvider;
-        public AccountController(AccountProvider accountProvider)
+        private readonly IAccountProvider _accountProvider;
+        public AccountController(IAccountProvider accountProvider)
         {
             _accountProvider = accountProvider;
         }
@@ -35,7 +36,7 @@ namespace WebLayer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +45,7 @@ namespace WebLayer.Controllers
                 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await _accountProvider.Login(model);
+            var result = _accountProvider.Login(model);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -84,11 +85,11 @@ namespace WebLayer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountProvider.Register(model);
+                var result = _accountProvider.Register(model);
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -113,6 +114,71 @@ namespace WebLayer.Controllers
         {
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+        }
+
+        [AllowAnonymous]
+        public ActionResult ExternalLoginCallback(string returnUrl)
+        {
+            var loginInfo = _accountProvider.GetExternalLoginInfo();
+            if (loginInfo == null)
+            {
+                return RedirectToAction("Login");
+            }
+            //var firstName = loginInfo
+            //    .ExternalIdentity
+            //    .Claims
+            //    .First(c => c.Type == "urn:facebook:first_name").Value;
+            //var birthday = loginInfo
+            //    .ExternalIdentity
+            //    .Claims
+            //    .First(c => c.Type == "urn:facebook:birthday").Value;
+            // Sign in the user with this external login provider if the user already has a login
+            var result = _accountProvider.ExternalSignIn(loginInfo);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    // If the user does not have an account, then prompt the user to create an account
+                    ViewBag.ReturnUrl = returnUrl;
+                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Get the information about the user from the external login provider
+                ExternalLoginInfo info = _accountProvider.GetExternalLoginInfo();
+                if (info == null)
+                {
+                    return View("ExternalLoginFailure");
+                }
+                var result = _accountProvider.ExternalLoginConfirmation(model, info);
+                if (result.Succeeded)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         #endregion
