@@ -42,6 +42,11 @@ namespace DAL.Repositories
             return GetAll<TEntity>().SingleOrDefault(x => x.Id == id);
         }
 
+        public TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>
+        {
+            return GetAll<TEntity>().SingleOrDefault(x => x.Id == id);
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201711071025469_add table UserProfiles.Designer.cs">
       <DependentUpon>201711071025469_add table UserProfiles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711080934560_Update UserProfiles Table.cs" />
+    <Compile Include="Migrations\201711080934560_Update UserProfiles Table.Designer.cs">
+      <DependentUpon>201711080934560_Update UserProfiles Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
@@ -85,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711071025469_add table UserProfiles.resx">
       <DependentUpon>201711071025469_add table UserProfiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711080934560_Update UserProfiles Table.resx">
+      <DependentUpon>201711080934560_Update UserProfiles Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
