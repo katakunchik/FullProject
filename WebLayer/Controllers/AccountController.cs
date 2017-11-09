@@ -36,7 +36,7 @@ namespace WebLayer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace WebLayer.Controllers
                 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = _accountProvider.Login(model);
+            var result = await _accountProvider.LoginAsync(model);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -85,11 +85,11 @@ namespace WebLayer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = _accountProvider.Register(model);
+                var result = await _accountProvider.RegisterAsync(model);
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -117,9 +117,9 @@ namespace WebLayer.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ExternalLoginCallback(string returnUrl)
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = _accountProvider.GetExternalLoginInfo();
+            var loginInfo = await _accountProvider.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -133,7 +133,7 @@ namespace WebLayer.Controllers
             //    .Claims
             //    .First(c => c.Type == "urn:facebook:birthday").Value;
             // Sign in the user with this external login provider if the user already has a login
-            var result = _accountProvider.ExternalSignIn(loginInfo);
+            var result = await _accountProvider.ExternalSignInAsync(loginInfo);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -154,7 +154,7 @@ namespace WebLayer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -164,12 +164,12 @@ namespace WebLayer.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                ExternalLoginInfo info = _accountProvider.GetExternalLoginInfo();
+                ExternalLoginInfo info = await _accountProvider.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
                 }
-                var result = _accountProvider.ExternalLoginConfirmation(model, info);
+                var result = await _accountProvider.ExternalLoginConfirmationAsync(model, info);
                 if (result.Succeeded)
                 {
                     return RedirectToLocal(returnUrl);

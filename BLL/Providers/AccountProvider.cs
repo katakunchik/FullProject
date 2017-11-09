@@ -1,7 +1,9 @@
 ﻿using BLL.Interfaces;
 using BLL.Services.Identity;
 using BLL.ViewModels.Identity;
+using DAL.Entities;
 using DAL.Entities.Identity;
+using DAL.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -18,12 +20,20 @@ namespace BLL.Providers
         private readonly AppUserManager _userManager;
         private readonly AppSignInManager _signInManager;
         private readonly IAuthenticationManager _authManager;
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AccountProvider(AppUserManager userManager, AppSignInManager signInManager, IAuthenticationManager authManager)
+        public AccountProvider(AppUserManager userManager, 
+            AppSignInManager signInManager, 
+            IAuthenticationManager authManager,
+            IUserRepository userRepository,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public AppSignInManager SignInManager
@@ -50,10 +60,23 @@ namespace BLL.Providers
             }
         }
 
+        private IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return _unitOfWork;
+            }
+        }
+
         public SignInStatus Login(LoginViewModel model)
         {
             var result = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             return result;
+        }
+
+        public async Task<SignInStatus> LoginAsync(LoginViewModel model)
+        {
+            return await Task.Run(() => this.Login(model));
         }
 
         public void LogOff()
@@ -63,17 +86,48 @@ namespace BLL.Providers
 
         public IdentityResult Register(RegisterViewModel model)
         {
-            var user = new AppUser
+            IdentityResult result = new IdentityResult();
+            result = IdentityResult.Failed();
+            try
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-            var result = UserManager.Create(user, model.Password);
-            if (result.Succeeded)
-            {
-                SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                using (var uow = UnitOfWork)
+                {
+                    uow.StartTransaction();
+                    var user = new AppUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
+                    result = UserManager.Create(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        Guid guidImage = Guid.NewGuid();
+                        UserProfile userProfile = new UserProfile
+                        {
+                            Id = user.Id,
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            Image = guidImage.ToString()
+                        };
+                        _userRepository.Add(userProfile);
+                        _userRepository.SaveChanges();
+                        uow.CommitTransaction();
+                        //SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                    }
+                }
             }
+            catch
+            {
+                UnitOfWork.Dispose();
+                result = IdentityResult.Failed();
+            }
+            
             return result;
+        }
+
+        public async Task<IdentityResult> RegisterAsync(RegisterViewModel model)
+        {
+            return await Task.Run(() => this.Register(model));
         }
 
         public ExternalLoginInfo GetExternalLoginInfo()
@@ -81,9 +135,19 @@ namespace BLL.Providers
             return _authManager.GetExternalLoginInfo();
         }
 
+        public async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        {
+            return await _authManager.GetExternalLoginInfoAsync();
+        }
+
         public SignInStatus ExternalSignIn(ExternalLoginInfo loginInfo)
         {
             return _signInManager.ExternalSignIn(loginInfo, isPersistent: false);
+        }
+
+        public async Task<SignInStatus> ExternalSignInAsync(ExternalLoginInfo loginInfo)
+        {
+            return await _signInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
         }
 
         public IdentityResult ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, ExternalLoginInfo info)
@@ -105,6 +169,17 @@ namespace BLL.Providers
             }
             return result;
         }
+
+        public async Task<IdentityResult> ExternalLoginConfirmationAsync(ExternalLoginConfirmationViewModel model, ExternalLoginInfo info)
+        {
+            return await Task.Run(() => this.ExternalLoginConfirmation(model, info));
+        }
+
+
+
+
+
+
 
         #region AsyncMethods
 

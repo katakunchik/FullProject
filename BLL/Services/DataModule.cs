@@ -46,6 +46,7 @@ namespace BLL.Services
             builder.RegisterType<AccountProvider>().AsSelf().InstancePerRequest();
 
             builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
             builder.RegisterType<AccountProvider>().As<IAccountProvider>().InstancePerRequest();
 

@@ -10,7 +10,7 @@ namespace BLL.ViewModels.Identity
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         public string Email { get; set; }
     }
 
@@ -46,23 +46,23 @@ namespace BLL.ViewModels.Identity
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Запам’ятати мене?")]
         public bool RememberMe { get; set; }
     }
 
@@ -70,18 +70,25 @@ namespace BLL.ViewModels.Identity
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         public string Email { get; set; }
+        [Required]
+        [Display(Name = "Ім'я")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Прізвище")]
+        public string LastName { get; set; }
+        public string Image { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} повинен містити щонайменше {2} символів", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Підтвердження пароля")]
+        [Compare("Password", ErrorMessage = "Пароль і підтвердження пароля не співпадають")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -89,18 +96,18 @@ namespace BLL.ViewModels.Identity
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} повинен містити щонайменше {2} символів", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Підтвердження пароля")]
+        [Compare("Password", ErrorMessage = "Пароль і підтвердження пароля не співпадають")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -110,7 +117,7 @@ namespace BLL.ViewModels.Identity
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна адреса")]
         public string Email { get; set; }
     }
 }
