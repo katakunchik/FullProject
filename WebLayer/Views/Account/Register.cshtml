@@ -10,51 +10,69 @@
     @Html.AntiForgeryToken()
     <h4>Створення нового облікового записа</h4>
     <hr />
-    @Html.TextAreaFor(m => m.Image, new { @style = "display: none;" })
+    @Html.TextAreaFor(m => m.Image, new { @style = "display: none;", @id = "hiddenArea" })
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="avatar" id="avatarPreview"></div>
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    @*<div class="form-group">
-        <div class="col-md-12">
-            <input type="file" class="filestyle inputImage" />
-        </div>
-    </div>*@
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Зареєструватися" />
+        <div class="col-md-offset-4 col-md-4">
+            <input type="submit" class="btn btn-primary" value="Зареєструватися" />
         </div>
     </div>
 }
 
+@Html.Partial("_CropperSelectImage")
+
+@section Styles {
+    <script src="https://use.fontawesome.com/a4475ec063.js"></script>
+    <link href="~/Content/cropper/cropper.css" rel="stylesheet" />
+    <link href="~/Content/cropper/main.css" rel="stylesheet" />
+
+    <link href="~/Content/cropper/filestyle/editor_custom.css" rel="stylesheet" />
+    <link href="~/Content/cropper/filestyle/forms.css" rel="stylesheet" />
+    <link href="~/Content/cropper/UserStyles.css" rel="stylesheet" />
+
+}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/cropper/bootstrap-filestyle.js"></script>
+    <script src="~/Scripts/cropper/cropper.js"></script>
+    <script src="~/Scripts/cropper/main.js"></script>
 }
 

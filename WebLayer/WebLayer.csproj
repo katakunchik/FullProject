@@ -204,6 +204,13 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cropper\cropper.css" />
+    <Content Include="Content\cropper\filestyle\editor_custom.css" />
+    <Content Include="Content\cropper\filestyle\forms.css" />
+    <Content Include="Content\cropper\filestyle\style.css" />
+    <Content Include="Content\cropper\images\empty-image.png" />
+    <Content Include="Content\cropper\main.css" />
+    <Content Include="Content\cropper\UserStyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -223,6 +230,9 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cropper\bootstrap-filestyle.js" />
+    <Content Include="Scripts\cropper\cropper.js" />
+    <Content Include="Scripts\cropper\main.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -256,6 +266,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\_CropperSelectImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
